@@ -3,7 +3,8 @@
   "buildCommand": "npm run build",
   "functions": {
     "dist/index.js": {
-      "includeFiles": "dist/public/**"
+      "includeFiles": "dist/public/**",
+      "runtime": "nodejs18.x"
     }
   },
   "routes": [
