@@ -1,19 +1,16 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
-  "builds": [
-    {
-      "src": "dist/index.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": "dist/public/**"
-      }
+  "functions": {
+    "dist/index.js": {
+      "runtime": "nodejs18.x",
+      "includeFiles": "dist/public/**"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/index.js"
+      "dest": "/dist/index.js"
     }
   ]
 }
