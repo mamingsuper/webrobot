@@ -1,0 +1,61 @@
+1. 主页 (About Page)
+优化建议
+突出重点信息：
+
+目前你的名字 "Ming Ma" 颜色为渐变黄色，可以考虑稍微降低亮度，使其更加专业，同时确保与背景形成适当对比。
+“computational social science, comparative politics, and AI governance”这部分加粗字体适合，但可以考虑用 Tailwind 的 text-lg 或 text-xl 提升阅读体验。
+改进排版：
+
+英文和中文介绍部分排版有点过于紧凑，可以使用 space-y-4 让段落之间有适当间距。
+可以用 max-w-2xl mx-auto 限制文本宽度，提升可读性。
+头像或图片优化：
+
+2. 最新动态 (Recent Updates)
+优化建议
+层级设计
+
+“New Publication” 这部分的标题和内容层次不够清晰。可以使用 border-l-4 border-gray-500 pl-4 给每个更新添加左侧边框，增强信息层次感。
+目前的字体大小较小，可以使用 text-lg font-semibold 提高可读性。
+时间线优化
+
+如果你的“Recent Updates”更新较多，建议使用时间线组件，例如：
+jsx
+复制
+编辑
+<div className="relative border-l border-gray-300">
+  <div className="ml-4 mt-4">
+    <h3 className="text-lg font-semibold">New Publication</h3>
+    <p className="text-gray-500">Mirrors and Mosaics</p>
+    <span className="text-sm text-gray-400">Published in Top Journal</span>
+  </div>
+</div>
+这样可以形成一条清晰的时间轴。
+3. 项目 (Projects)
+优化建议
+图片与文本的对齐
+
+目前的项目排版有点过于松散。建议使用 grid grid-cols-1 md:grid-cols-2 gap-6 让项目卡片更紧凑。
+如果项目标题是中文，可以适当放大字号，如 text-xl font-bold。
+卡片样式
+
+目前的卡片背景比较单调，可以考虑 shadow-lg rounded-2xl 增加立体感。
+4. 发表论文 (Publications)
+优化建议
+信息层级调整
+
+书籍（Books）和文章（Articles）部分的区别不够明显，可以在标题前加上图标，例如：
+jsx
+复制
+编辑
+<h2 className="text-2xl font-bold flex items-center">
+  <BookOpenIcon className="w-6 h-6 mr-2 text-gray-600" /> Books
+</h2>
+文章（Articles）部分每篇论文之间的间距可以增加 space-y-4，提高可读性。
+提升交互体验
+
+对于“(Accepted) PDF”或 URL，可以加上 hover:text-blue-500 让用户知道这些是可点击的链接。
+5. 全局优化
+导航栏
+目前导航栏的选中状态（如 "Publications" 被选中）是 text-yellow-500，可以改成 border-b-2 border-yellow-500 pb-2 让选中项更明显。
+字体
+目前的正文可以用 text-gray-800 leading-relaxed 让阅读更加舒适。
