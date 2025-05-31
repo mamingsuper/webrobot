@@ -1,14 +1,13 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
 import path, { dirname } from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
 export default defineConfig({
-  plugins: [react(), runtimeErrorOverlay(), themePlugin()],
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "client", "src"),
@@ -20,10 +19,9 @@ export default defineConfig({
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
   },
-  server: {
-    middlewareMode: true,
-    // 如果不需要自定义 HMR 服务器，可以直接移除 hmr 配置
-    // hmr: { server: someHMRServer },
-    allowedHosts: true,
-  },
+  // 删除或注释掉以下server配置即可
+  // server: {
+  //   middlewareMode: true,
+  //   allowedHosts: true
+  // }
 });
