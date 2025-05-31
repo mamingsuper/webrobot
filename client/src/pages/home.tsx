@@ -68,7 +68,7 @@ export default function Home() {
             viewport={{ once: true }}
           >
             {[{
-                title: "New Publication in Humanities and Social Sciences Communications",
+                title: "New Publication in Humanities and Social Sciences Communications!",
                 content: (
                   <>
                     Panacea or Pandora’s box: diverse governance strategies for conspiracy theories and their consequences in China
