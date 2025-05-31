@@ -69,22 +69,22 @@ export default function Home() {
           >
             {[
               {
-                title: "New Publication in Perspectives on Politics",
+                title: "New Publication in Humanities and Social Sciences Communications",
+                content: (
+                  <>
+                    Panacea or Pandora’s box: diverse governance strategies for conspiracy theories and their consequences in China
+                  </>
+                ),
+                date: "May 2025"
+              },
+              {
+               title: "New Publication in Perspectives on Politics",
                 content: (
                   <>
                     Mirrors and Mosaics: Deciphering Bloc-Building Narratives in Chinese and Russian Mass Media
                   </>
                 ),
                 date: "Jan 2025"
-              },
-              {
-                title: "New Publication in Humanities and Social Sciences Communications",
-                content: (
-                  <>
-                    Panacea or Pandora's Box: Diverse Governance Strategies to Conspiracy Theories
-                  </>
-                ),
-                date: "Feb 2025"
               },
               {
                 title: "New Working Paper",
