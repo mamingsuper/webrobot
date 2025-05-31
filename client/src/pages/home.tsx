@@ -67,7 +67,15 @@ export default function Home() {
             whileInView="animate"
             viewport={{ once: true }}
           >
-            {[
+            {[{
+                title: "New Publication in Humanities and Social Sciences Communications",
+                content: (
+                  <>
+                    Panacea or Pandora's Box: Diverse Governance Strategies to Conspiracy Theories
+                  </>
+                ),
+                date: "May 2025"
+              },
               {
                 title: "New Publication in Perspectives on Politics",
                 content: (
@@ -76,15 +84,6 @@ export default function Home() {
                   </>
                 ),
                 date: "Jan 2025"
-              },
-              {
-                title: "New Publication in Humanities and Social Sciences Communications",
-                content: (
-                  <>
-                    Panacea or Pandora's Box: Diverse Governance Strategies to Conspiracy Theories
-                  </>
-                ),
-                date: "Feb 2025"
               },
               {
                 title: "New Working Paper",
