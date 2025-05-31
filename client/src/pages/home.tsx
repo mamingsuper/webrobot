@@ -71,7 +71,7 @@ export default function Home() {
                 title: "New Publication in Humanities and Social Sciences Communications",
                 content: (
                   <>
-                    Panacea or Pandora's Box: Diverse Governance Strategies to Conspiracy Theories
+                    Panacea or Pandora’s box: diverse governance strategies for conspiracy theories and their consequences in China
                   </>
                 ),
                 date: "May 2025"
