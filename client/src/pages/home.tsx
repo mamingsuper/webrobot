@@ -1,20 +1,24 @@
 import { SplineSceneDemo } from "@/components/demo/spline-demo";
 import { Navigation } from "@/components/ui/navigation";
 import { motion } from "framer-motion";
-import { NeuralNetBackground } from "@/components/ui/neural-net-bg";
-import { DataFlow } from "@/components/ui/data-flow";
-import { DatawrapperChart } from "@/components/ui/DatawrapperChart";
-import {
-  Brain,
-  Network,
-  GitBranch,
-  Cpu,
-  GitPullRequest,
-  FileCode2,
-} from "lucide-react";
+// import { NeuralNetBackground } from "@/components/ui/neural-net-bg"; // 未使用移除
+// import { DataFlow } from "@/components/ui/data-flow"; // 未使用移除
+// import { DatawrapperChart } from "@/components/ui/DatawrapperChart"; // 未使用移除
+import { Brain, Network, GitPullRequest, FileCode2 } from "lucide-react";
 import { Spotlight } from "@/components/ui/spotlight";
+// import { useSectionSnap } from "@/hooks/useSectionSnap"; // replaced by continuous snap
+// import { useContinuousSectionSnap } from "@/hooks/useContinuousSectionSnap";
+import { useSectionSnap } from "@/hooks/useSectionSnap";
+// Removed Hero component import (reverted as per user request)
 
 export default function Home() {
+  // 需求：只在第一次向下浏览时帮助对齐，不要后续强制回弹
+  // 使用一次性 snap（session 内只触发一次，可通过清空 sessionStorage 复位）
+  useSectionSnap(["about", "updates", "projects", "publications"], {
+    threshold: 0.25,
+    oncePerSession: true,
+    timeoutMs: 1000
+  });
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -31,6 +35,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen w-full bg-white relative">
+      <a href="#main" className="skip-link">Skip to main content</a>
       <Navigation />
       <Spotlight 
         particleSize={25}
@@ -38,52 +43,44 @@ export default function Home() {
         colors={['#FF1CF7', '#00FFE0', '#00FF85', '#FFF500', '#FF8E00']}
         className="!fixed"
       />
-
-      {/* Hero Section */}
-      <div className="pt-32 pb-32 px-4 md:px-8 bg-white">
+      <main id="main">
+      {/* Top visual / intro (reverted to original spacing). If you keep an About text block elsewhere, you can merge it here later. */}
+  <header className="pt-32 pb-12 px-4 md:px-8 bg-white" id="about" aria-labelledby="about-heading" data-snap>
         <div className="max-w-6xl mx-auto">
+          <h1 id="about-heading" className="sr-only">About</h1>
+          {/* 顶部可视 3D 模块 */}
           <SplineSceneDemo />
         </div>
-      </div>
+      </header>
 
       {/* Recent Updates Section */}
-      <section id="updates" className="py-32 px-4 md:px-8 relative bg-white">
-        <div className="max-w-3xl mx-auto relative">
-          <motion.h2
-            className="section-title flex items-center justify-center gap-3 mb-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <Brain className="w-8 h-8 text-black pulse-glow" />
-            <span className="text-black font-bold text-3xl">
-              Recent Updates
-            </span>
+  <section
+    id="updates"
+    className="pt-16 pb-24 px-4 md:px-8 bg-white min-h-[calc(100vh-72px)] flex flex-col"
+    aria-labelledby="updates-heading"
+    data-snap>
+        <div className="max-w-3xl mx-auto">
+          <motion.h2 id="updates-heading" className="flex items-center justify-center gap-3 mb-12 heading-2" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+            <Brain className="w-8 h-8 text-amber-600 motion-safe:animate-pulse" />
+            <span>Recent Updates</span>
           </motion.h2>
-          <motion.div
-            className="relative border-l-2 border-gray-200 pl-6 space-y-8 ml-4"
+          <motion.ol
+            className="relative ml-4 pl-6 border-l border-gray-200 space-y-10"
             variants={staggerChildren}
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
+            aria-label="Recent chronological updates"
           >
             {[
               {
                 title: "New Publication in Humanities and Social Sciences Communications",
-                content: (
-                  <>
-                    Panacea or Pandora’s box: diverse governance strategies for conspiracy theories and their consequences in China
-                  </>
-                ),
+                content: "Panacea or Pandora’s box: diverse governance strategies for conspiracy theories and their consequences in China",
                 date: "May 2025"
               },
               {
-               title: "New Publication in Perspectives on Politics",
-                content: (
-                  <>
-                    Mirrors and Mosaics: Deciphering Bloc-Building Narratives in Chinese and Russian Mass Media
-                  </>
-                ),
+                title: "New Publication in Perspectives on Politics",
+                content: "Mirrors and Mosaics: Deciphering Bloc-Building Narratives in Chinese and Russian Mass Media",
                 date: "Jan 2025"
               },
               {
@@ -91,47 +88,32 @@ export default function Home() {
                 content: "Bureaucrat-Expert Collaboration in LLM Adoption: An Institutional Logic Perspective on China's Public Sector",
                 date: "Feb 2025"
               },
-            ].map((update, i) => (
-              <motion.div
+            ].map((u, i) => (
+              <motion.li
                 key={i}
                 variants={fadeInUp}
-                className="bg-white p-4 rounded-lg shadow-lg relative"
-                whileHover={{
-                  scale: 1.02,
-                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-                }}
+                className="relative focus-within:ring-2 focus-within:ring-amber-500 rounded-md outline-none"
               >
-                <div className="absolute -left-10 w-4 h-4 bg-amber-500 rounded-full border-4 border-white" />
-                <div className="flex items-start gap-3">
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center mb-2">
-                      <h3 className="text-lg font-semibold text-black">
-                        {update.title}
-                      </h3>
-                      <span className="text-sm text-gray-500">{update.date}</span>
-                    </div>
-                    <p className="text-gray-700 text-sm leading-relaxed">{update.content}</p>
+                <span className="absolute -left-[30px] top-2 w-4 h-4 rounded-full bg-amber-500 ring-4 ring-white" aria-hidden="true" />
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <h3 className="text-base font-semibold text-neutral-900">{u.title}</h3>
+                    <time className="text-xs font-medium tracking-wide uppercase text-neutral-500">{u.date}</time>
                   </div>
+                  <p className="text-sm text-neutral-600 leading-relaxed max-w-prose">{u.content}</p>
                 </div>
-              </motion.div>
+              </motion.li>
             ))}
-          </motion.div>
+          </motion.ol>
         </div>
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-32 px-4 md:px-8 relative bg-gray-50">
+  <section id="projects" className="py-28 px-4 md:px-8 bg-gray-50" aria-labelledby="projects-heading" data-snap>
         <div className="max-w-4xl mx-auto relative">
-          <motion.h2
-            className="section-title flex items-center justify-center gap-3 mb-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <Network className="w-8 h-8 text-black pulse-glow" />
-            <span className="text-black font-bold text-3xl">
-              Projects
-            </span>
+          <motion.h2 id="projects-heading" className="flex items-center justify-center gap-3 mb-12 heading-2" initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}>
+            <Network className="w-8 h-8 text-amber-600 motion-safe:animate-pulse" />
+            <span>Projects</span>
           </motion.h2>
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -150,32 +132,32 @@ export default function Home() {
               { title: "Generative AI and Politics", desc: "This project investigates the use of generative AI in political communication and its implications for non-democratic regimes. Mixed mthods are used to investigate how AI is used by the different actors and the power distritution dynamics.",
                  img: "/project-2.jpg" }
             ].map((project, i) => (
-              <motion.div
+              <motion.article
                 key={i}
                 variants={fadeInUp}
-                className="bg-white p-4 rounded-2xl shadow-lg overflow-hidden"
-                whileHover={{ 
-                  scale: 1.03,
-                  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.12)"
-                }}
+                className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-within:shadow-md focus-within:-translate-y-0.5 focus-within:ring-2 focus-within:ring-amber-500 outline-none"
+                tabIndex={0}
               >
-                <div className="aspect-[3/2] bg-white rounded-lg overflow-hidden mb-4">
+                <div className="aspect-[3/2] bg-white rounded-lg overflow-hidden mb-4 relative">
                   <img 
                     src={project.img} 
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    loading="lazy"
+                    width={640}
+                    height={420}
+                    className="w-full h-full object-cover transition-transform duration-300 motion-safe:group-hover:scale-105"
                   />
                 </div>
-                <div className="p-2">
-                  <div className="flex items-center gap-2 mb-2">
-                    <GitPullRequest className="w-5 h-5 text-amber-500" />
-                    <h3 className="text-xl font-bold text-black">
+                <div className="p-1">
+                  <div className="flex items-start gap-2 mb-2">
+                    <GitPullRequest className="w-5 h-5 text-amber-500 mt-0.5" />
+                    <h3 className="text-lg font-semibold text-neutral-900 leading-snug">
                       {project.link ? (
                         <a 
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="hover:text-amber-600 transition-colors"
+                          className="underline decoration-transparent hover:decoration-amber-500 transition"
                         >
                           {project.title}
                         </a>
@@ -184,33 +166,29 @@ export default function Home() {
                       )}
                     </h3>
                   </div>
-                  <p className="text-gray-700 text-sm leading-relaxed line-clamp-4">
-                    {project.desc}
-                  </p>
+                  <details className="group text-neutral-600 text-sm leading-relaxed">
+                    <summary className="cursor-pointer list-none select-none text-amber-600 hover:text-amber-700 font-medium mb-1 inline-flex items-center gap-1 after:content-['›'] after:transition-transform group-open:after:rotate-90">
+                      Description
+                    </summary>
+                    <p className="mt-1 whitespace-pre-line">{project.desc.trim()}</p>
+                  </details>
                 </div>
-              </motion.div>
+              </motion.article>
             ))}
           </motion.div>
         </div>
       </section>
 
       {/* Publications Section */}
-      <section id="publications" className="py-32 px-4 md:px-8 relative bg-white">
+  <section id="publications" className="py-36 px-4 md:px-8 bg-white" aria-labelledby="pubs-heading" data-snap>
         <div className="max-w-4xl mx-auto relative">
-          <motion.h2
-            className="section-title flex items-center justify-center gap-3 mb-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <FileCode2 className="w-8 h-8 text-black pulse-glow" />
-            <span className="text-black font-bold text-3xl">
-              Publications
-            </span>
+          <motion.h2 id="pubs-heading" className="flex items-center justify-center gap-3 mb-16 heading-2" initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}>
+            <FileCode2 className="w-8 h-8 text-amber-600 motion-safe:animate-pulse" />
+            <span>Publications</span>
           </motion.h2>
 
           {/* Books */}
-          <div className="mb-12">
+          <div className="mb-16">
             <h3 className="text-xl font-bold text-black mb-6 flex items-center gap-2">
               <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -254,7 +232,7 @@ export default function Home() {
           </div>
 
           {/* Articles */}
-          <div className="mb-12">
+          <div className="mb-16">
             <h3 className="text-xl font-bold text-black mb-6 flex items-center gap-2">
               <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
@@ -270,6 +248,14 @@ export default function Home() {
             >
               {[
                 {
+                  title: "Listening to an Authoritarian Neighbor: Russian Propaganda on Chinese Social Media after the Ukraine Invasion",
+                  authors: "Ma Ming, Daniil Romanov, Genia Kostka and Alexander Libman",
+                  journal: "Political Research Quarterly",
+                  year: "Accepted",
+                  Status: "Accepted",
+                  abstract: ' Authoritarian states actively engage in cross-border propaganda. While the effects and the narratives of this propaganda targeting democracies have been studied in the past, little attention has been paid to how sudden and significant geopolitical events influence the engagement of authoritarian propaganda in other like-minded states. This study closes the gap by looking at Russia’s propaganda in Chinese social media platform Weibo. We look at how users of the platform reacted on messages spread by RT and Sputnik after the full-scale invasion against Ukraine. Applying computational text analysis and regression analysis we show that although the outbreak of the war led to a surge in Russian propaganda—especially anti-Western and war-related narratives—Chinese audiences exhibited a pronounced tendency to engage primarily with narratives highlighting non-Western cooperation, reflecting a strong alignment with the Chinese government’s domestic propaganda.'
+                },
+                {
                   title: "Mirrors and Mosaics: Deciphering Bloc-Building Narratives in Chinese and Russian Mass Media",
                   authors: "Ma Ming, Daniil Romanov, Genia Kostka and Alexander Libman",
                   journal: "Perspectives on Politics",
@@ -281,8 +267,8 @@ export default function Home() {
                   title: "Panacea or Pandora's Box: Diverse Governance Strategies to Conspiracy Theories and their Consequences in China",
                   authors: "Ma Ming, Han Feng and Wang Chuyao",
                   journal: "Humanities and Social Sciences Communications",
-                  year: "2024",
-                  status: "(Accepted)",
+                  year: "2025",
+                  link: "https://doi.org/10.1057/s41599-024-04350-1",
                   abstract: 'This study examines the Chinese government\'s strategies for managing conspiracy theories (CTs) on social media. While previous research has primarily considered how authoritarian regimes disseminate CTs for political purposes and has often viewed the public as fully receptive to propaganda and easily manipulated, our research explores a broader spectrum of state strategies including propagation, tolerance, and partial rebuttal. Based on social network analysis, topic modelling, and qualitative analysis of 46,387 Weibo posts from 3 cases, we argue that the Chinese government\'s manipulation of CTs is multifaceted and carries significant audience costs. Our findings indicate that state-led CTs can indeed mobilize public opinion, but they also risk expanding beyond state control, which can lead to unintended consequences that may undermine state interests and limit policy flexibility. This research contributes to our understanding of the tactical and operational complexities authoritarian regimes face when leveraging CTs, while highlighting the intricate balance between state control and public agency.'
                 },
                 {
@@ -315,42 +301,40 @@ export default function Home() {
                 <motion.div
                   key={i}
                   variants={fadeInUp}
-                  className="bg-white p-5 rounded-lg shadow-lg border-l-4 border-amber-500"
+                  className="bg-white p-5 rounded-lg shadow-sm border-l-4 border-amber-500 border border-gray-100 transition-shadow duration-200 hover:shadow-md focus-within:shadow-md outline-none"
                   whileHover={{
                     scale: 1.01,
                     y: -2,
                     boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <h4 className="text-lg font-medium text-black mb-2">
-                    {article.link || article.doi ? (
-                      <a 
-                        href={article.link || article.doi}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-amber-600 transition-colors"
-                      >
-                        {article.title}
-                      </a>
-                    ) : (
-                      article.title
-                    )}
-                  </h4>
+                  <h4 className="text-lg font-medium text-black mb-2">{article.title}</h4>
                   <p className="text-sm text-gray-700 mb-2 leading-relaxed">
                     {article.authors}, {article.journal}, {article.year} {article.status && `${article.status}`}
                   </p>
-                  {article.doi && (
-                    <p className="text-sm text-gray-600 mb-2">
-                      DOI: <a href={article.doi} target="_blank" rel="noopener noreferrer" className="text-amber-600 hover:text-amber-700">{article.doi}</a>
-                    </p>
+                  {article.link && (
+                    <div className="mb-2">
+                      <a
+                        href={article.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-full bg-amber-600 text-white hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-colors"
+                      >
+                        Full Text
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5h6m0 0v6m0-6L10 14" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 19l6-6" />
+                        </svg>
+                      </a>
+                    </div>
                   )}
                   {article.abstract && (
                     <div className="mt-2">
-                      <details className="text-sm">
+                      <details className="text-sm group">
                         <summary className="cursor-pointer text-amber-600 hover:text-amber-700 font-medium">
                           Abstract
                         </summary>
-                        <p className="mt-2 text-gray-700 leading-relaxed">
+                        <p className="mt-2 text-gray-700 leading-relaxed max-w-prose">
                           {article.abstract}
                         </p>
                       </details>
@@ -362,7 +346,7 @@ export default function Home() {
           </div>
 
           {/* Working Papers */}
-          <div>
+          <div className="mt-20">
             <h3 className="text-xl font-bold text-black mb-6 flex items-center gap-2">
               <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -389,7 +373,7 @@ export default function Home() {
                 <motion.div
                   key={i}
                   variants={fadeInUp}
-                  className="bg-white p-5 rounded-lg shadow-lg border-l-4 border-amber-500"
+                  className="bg-white p-5 rounded-lg shadow-sm border-l-4 border-amber-500 border border-gray-100 transition-shadow duration-200 hover:shadow-md focus-within:shadow-md outline-none"
                   whileHover={{
                     scale: 1.01,
                     y: -2,
@@ -428,6 +412,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </main>
     </div>
   );
 }
