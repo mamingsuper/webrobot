@@ -74,7 +74,7 @@ export function Navigation() {
               }}
               className={cn(
                 "nav-link",
-                "text-sm font-medium tracking-wide",
+                "text-base font-medium tracking-wide",
                 "px-4 py-2 mx-1 rounded-md transition-all duration-200 hover:bg-gray-100",
                 activeSection === link.href && "active border-b-2 border-amber-500 pb-1 bg-transparent text-amber-600",
               )}
