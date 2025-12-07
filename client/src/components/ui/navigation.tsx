@@ -24,10 +24,10 @@ export function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["updates", "projects", "publications"].map(id => 
+      const sections = ["updates", "projects", "publications"].map(id =>
         document.getElementById(id)
       );
-      
+
       const scrollPosition = window.scrollY + window.innerHeight / 3;
 
       if (scrollPosition < (sections[0]?.offsetTop || Infinity)) {
@@ -36,7 +36,7 @@ export function Navigation() {
         for (let i = 0; i < sections.length; i++) {
           const current = sections[i];
           const next = sections[i + 1];
-          
+
           if (current && (!next || scrollPosition >= current.offsetTop && scrollPosition < next.offsetTop)) {
             setActiveSection(`#${current.id}`);
             break;
@@ -52,9 +52,11 @@ export function Navigation() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
-      <nav className="max-w-6xl mx-auto px-4 h-16">
-        <div className="flex items-center justify-center md:justify-end h-full">
+    <div
+      className="fixed top-0 left-0 right-0 z-50 bg-[#fffbf5]/80 backdrop-blur-sm transition-all duration-300"
+    >
+      <nav className="max-w-[1400px] mx-auto px-6 h-20">
+        <div className="flex items-center justify-center md:justify-end h-full gap-2">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -73,10 +75,11 @@ export function Navigation() {
                 }
               }}
               className={cn(
-                "nav-link",
-                "text-base font-medium tracking-wide",
-                "px-4 py-2 mx-1 rounded-md transition-all duration-200 hover:bg-gray-100",
-                activeSection === link.href && "active border-b-2 border-amber-500 pb-1 bg-transparent text-amber-600",
+                "nav-link text-lg font-serif tracking-wide px-5 py-2.5 rounded-full transition-all duration-300",
+                "hover:bg-neutral-900/5 hover:scale-105 active:scale-95 text-neutral-800 hover:text-black",
+                activeSection === link.href
+                  ? "bg-neutral-900 text-white shadow-sm"
+                  : ""
               )}
             >
               {link.label}

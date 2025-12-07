@@ -1,101 +1,102 @@
 'use client'
 
+import { Card } from "@/components/ui/card";
 import { SplineScene } from "@/components/ui/spline";
-import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Twitter, Mail } from "lucide-react";
 import { BlurText } from "@/components/ui/BlurText";
+import { Spotlight } from "@/components/ui/spotlight";
+import { hero } from "@/data/content";
 
 export function SplineSceneDemo() {
   return (
-      <Card className="mx-auto w-full max-w-[93vw] xl:max-w-[1520px] bg-white relative overflow-hidden shadow-sm">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-center gap-4 lg:gap-6 min-h-[570px] lg:min-h-[780px]">
-        {/* Left content */}
-            <div className="w-full lg:w-[44%] px-6 sm:px-8 py-10 lg:px-8 lg:py-16 relative z-10 flex flex-col justify-center">
-            <div className="flex flex-col gap-6">
-              <div className="flex items-center gap-5">
-                <Avatar className="w-20 h-20 lg:w-24 lg:h-24">
-                <AvatarImage src="/avatar.JPG" alt="Profile" />
-                <AvatarFallback>ME</AvatarFallback>
-              </Avatar>
-                <h2 className="text-3xl lg:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-yellow-500 to-amber-700 drop-shadow-sm">
-                  Ming Ma
+    <div className="relative w-full flex justify-center mt-12 mb-12">
+      <Spotlight
+        className="-top-20 -left-20 md:left-0 md:-top-20 opacity-50 transition-opacity duration-500 hover:opacity-100"
+        colors={['#ff9f1c', '#2ec4b6', '#9d4edd', '#e71d36']}
+      />
+      <Card className="w-full max-w-6xl h-auto min-h-[500px] bg-white/50 backdrop-blur-md border border-white/60 shadow-lg relative overflow-visible flex items-center mx-4 sm:mx-8 rounded-3xl my-12">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-0 h-full w-full py-10 lg:py-12">
+          {/* Left content */}
+          <div className="w-full lg:w-1/2 px-8 sm:px-12 relative z-10 flex flex-col justify-center h-full">
+            <div className="flex flex-col gap-5">
+
+              {/* Compact Header: Avatar + Name side-by-side */}
+              <div className="flex flex-row items-center gap-5">
+                <Avatar className="w-48 h-48 lg:w-32 lg:h-32 shadow-xl ring-2 ring-[#fffbf5]">
+                  <AvatarImage src={hero.avatar} alt="Profile" />
+                  <AvatarFallback>ME</AvatarFallback>
+                </Avatar>
+                <h2 className="text-3xl lg:text-4xl font-serif font-medium text-neutral-900 tracking-tight leading-[1]">
+                  {hero.name}
                 </h2>
-            </div>
+              </div>
 
-              <div className="text-gray-800 space-y-3 leading-relaxed text-lg tracking-tight">
-              <BlurText
-                text="Hi, Welcome! I am a postdoctoral researcher at Free University Berlin."
-                delay={100}
-                animateBy="words"
-                direction="top"
-                className="text-inherit"
-              />
-              <BlurText
-                text="I study computational social science, comparative politics, and AI governance."
-                delay={150}
-                animateBy="words"
-                direction="top"
-                className="text-inherit"
-              />
-              <BlurText
-                text="I am particularly interested in how (mis)information about emerging technology both shapes and is shaped by the dynamics of global politics, digital spaces, and everyday life."
-                delay={200}
-                animateBy="words"
-                direction="top"
-                className="text-inherit"
-              />
-              <BlurText
-                text="My work has been published in peer-reviewed journals, including Perspectives on Politics, China Review, China Perspectives, among other journals."
-                delay={250}
-                animateBy="words"
-                direction="top"
-                className="text-inherit"
-              />
-              <BlurText
-                text="Contact me at ming.ma@fu-berlin.de."
-                delay={300}
-                animateBy="words"
-                direction="top"
-                className="text-inherit"
+              {/* Bio Text */}
+              <div className="text-neutral-800 space-y-3 leading-relaxed text-base lg:text-lg font-light tracking-wide max-w-lg">
+                {hero.bio.map((paragraph, index) => (
+                  <BlurText
+                    key={index}
+                    text={paragraph}
+                    delay={100 + index * 50}
+                    animateBy="words"
+                    direction="top"
+                    className="text-inherit block font-serif"
+                  />
+                ))}
+              </div>
+
+              {/* Compact Footer: Contact + Icons inline */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-4">
+                <BlurText
+                  text={`Contact me at ${hero.email}`}
+                  delay={300}
+                  animateBy="words"
+                  direction="top"
+                  className="text-neutral-900 font-serif font-medium border-b border-neutral-900 hover:border-transparent transition-all block text-lg"
+                />
+
+                <div className="flex gap-3 relative z-20">
+                  {hero.socials.map((social, idx) => {
+                    const Icon = social.icon === "Twitter" ? Twitter : Mail;
+                    return (
+                      <a
+                        key={idx}
+                        href={social.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center h-9 w-9 rounded-full border border-neutral-400 text-neutral-800 hover:bg-neutral-900 hover:text-white transition-all duration-300 bg-white/20"
+                        aria-label={social.label}
+                      >
+                        <Icon className="w-4 h-4" />
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Right content - Spline Scene with interaction enabled */}
+          <div className="mt-8 lg:mt-0 h-[300px] lg:h-full lg:absolute lg:right-[-5%] lg:top-0 lg:bottom-0 lg:w-[60%] pointer-events-auto">
+            {/* Mobile Spline */}
+            <div className="block lg:hidden h-full w-full">
+              <SplineScene
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                className="h-full w-full transform scale-100"
               />
             </div>
-
-              <div className="flex gap-4">
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors"
-                aria-label="Follow on X"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a
-                href="mailto:ming.ma@fu-berlin.de"
-                  className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors"
-                aria-label="Email Ming Ma"
-              >
-                <Mail className="w-5 h-5" />
-              </a>
+            {/* Desktop Spline - Positioned closer to text */}
+            <div className="hidden lg:block h-full w-full">
+              <SplineScene
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                className="h-full w-full transform scale-110 -translate-x-10"
+              />
             </div>
           </div>
         </div>
-
-        {/* Right content */}
-          <div className="mt-12 h-[22.8rem] lg:hidden">
-          <SplineScene
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="h-full w-full"
-          />
-        </div>
-          <div className="hidden lg:flex lg:w-[56%] h-full min-h-[780px] items-center lg:justify-start justify-center lg:pl-4">
-          <SplineScene
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-              className="h-[114%] w-full"
-          />
-        </div>
-      </div>
-    </Card>
-  )
+      </Card>
+    </div>
+  );
 }
