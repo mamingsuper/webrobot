@@ -4,7 +4,7 @@ export const hero = {
     role: "Postdoctoral Researcher",
     bio: [
         "Hi, Welcome! I am a postdoctoral researcher at Zeppelin University.",
-        "I study AI and public service transformation,computational social science and comparative politics.",
+        "I study AI and public service transformation, computational social science and comparative politics.",
         "I am particularly interested in how emerging technology both shapes and is shaped by the dynamics of power, wealth and knowledge distribution.",
         "My work has been published in peer-reviewed journals, including Perspectives on Politics, Political Research Quarterly, China Review, China Perspectives, among other journals."
     ],

@@ -13,7 +13,7 @@ export function SplineSceneDemo() {
     <div className="relative w-full flex justify-center mt-12 mb-12">
       <Spotlight
         className="-top-20 -left-20 md:left-0 md:-top-20 opacity-50 transition-opacity duration-500 hover:opacity-100"
-        colors={['#ff9f1c', '#2ec4b6', '#9d4edd', '#e71d36']}
+        fill="#ff9f1c"
       />
       <Card className="w-full max-w-6xl h-auto min-h-[500px] bg-white/50 backdrop-blur-md border border-white/60 shadow-lg relative overflow-visible flex items-center mx-4 sm:mx-8 rounded-3xl my-12">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-0 h-full w-full py-10 lg:py-12">
