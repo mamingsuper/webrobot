@@ -12,10 +12,10 @@ export function Hero() {
           className="max-w-3xl"
         >
           <h1 className="font-bold tracking-tight text-[clamp(2.5rem,5vw,3.25rem)] text-neutral-900 dark:text-white mb-6">
-            Ming Ma <span className="text-amber-600">PhD Candidate</span>
+            Ming Ma <span className="text-amber-600">Postdoctoral Researcher</span>
           </h1>
           <p className="text-lg leading-relaxed text-neutral-700 dark:text-neutral-300 max-w-prose">
-            Researching <span className="font-medium text-amber-600">authoritarian governance</span>, <span className="font-medium text-amber-600">AI adoption</span>, and <span className="font-medium text-amber-600">political communication</span>. Combining computational methods, media analysis, and institutional perspectives.
+            Postdoctoral researcher at <span className="font-medium text-amber-600">Leibniz Universität Hannover</span>, working on the ERC project <span className="font-medium text-amber-600">BiASE-AI</span>. Researching AI adoption in public services, computational social science, and comparative politics.
           </p>
           <div className="flex flex-wrap gap-2 mt-6">
             {['Authoritarian Politics','AI & Governance','Media Narratives','Computational Methods'].map(tag => (
