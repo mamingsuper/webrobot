@@ -1,13 +1,16 @@
 export const hero = {
     name: "Ming Ma",
     role: "Postdoctoral Researcher",
+    affiliation: "Leibniz Universität Hannover",
+    project: "ERC project BiASE-AI — Biases in Administrative Service Encounters: Transitioning from Human to Artificial Intelligence",
     bio: [
-        "Hi, Welcome! I am a postdoctoral researcher at Zeppelin University.",
+        "Hi, Welcome! I am a postdoctoral researcher at Leibniz Universität Hannover.",
+        "I work on the ERC project BiASE-AI (Biases in Administrative Service Encounters: Transitioning from Human to Artificial Intelligence).",
         "I study AI and public service transformation, computational social science and comparative politics.",
         "I am particularly interested in how emerging technology both shapes and is shaped by the dynamics of power, wealth and knowledge distribution.",
         "My work has been published in peer-reviewed journals, including Perspectives on Politics, Political Research Quarterly, Journal of Contemporary China, China Review, China Perspectives, among other journals."
     ],
-    email: "ming.ma@zu.de",
+    email: "m.ma@ipw.uni-hannover.de",
     socials: [
         {
             icon: "Twitter",
@@ -16,7 +19,7 @@ export const hero = {
         },
         {
             icon: "Mail",
-            link: "mailto:ming.ma@zu.de",
+            link: "mailto:m.ma@ipw.uni-hannover.de",
             label: "Email Ming Ma"
         }
     ],
@@ -47,6 +50,11 @@ export const updates = [
 ];
 
 export const projects = [
+    {
+        title: "BiASE-AI: Biases in Administrative Service Encounters",
+        desc: "As a postdoctoral researcher at Leibniz Universität Hannover, I contribute to the ERC project BiASE-AI, which examines how administrative service encounters change as public services transition from human decision-making to artificial intelligence.",
+        img: "/project-3.jpg"
+    },
     {
         title: "SCRIPTS: Reinterpreting the alternative script? War in Ukraine, state-sponsored narratives of block building in authoritarian countries and their public perception",
         desc: `The project analyzes the construction of 'alternative' narratives by authoritarian governments competing against the liberal script and the way these narratives are perceived, reinterpr[...]`

@@ -27,9 +27,21 @@ export function SplineSceneDemo() {
                   <AvatarImage src={hero.avatar} alt="Profile" />
                   <AvatarFallback>ME</AvatarFallback>
                 </Avatar>
-                <h2 className="text-3xl lg:text-4xl font-serif font-medium text-neutral-900 tracking-tight leading-[1]">
-                  {hero.name}
-                </h2>
+                <div className="flex flex-col gap-2">
+                  <h2 className="text-3xl lg:text-4xl font-serif font-medium text-neutral-900 tracking-tight leading-[1]">
+                    {hero.name}
+                  </h2>
+                  <p className="text-sm lg:text-base font-serif text-amber-700 tracking-wide">
+                    {hero.role}
+                  </p>
+                  <p className="text-sm lg:text-base font-serif text-neutral-700">
+                    {hero.affiliation}
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-amber-200/70 bg-amber-50/50 px-4 py-3 text-sm lg:text-base font-serif text-neutral-800 shadow-sm max-w-lg">
+                {hero.project}
               </div>
 
               {/* Bio Text */}
