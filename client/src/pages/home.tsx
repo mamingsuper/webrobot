@@ -1,16 +1,12 @@
-import { SplineSceneDemo } from "@/components/demo/spline-demo";
+import { Hero } from "@/components/hero";
 import { Navigation } from "@/components/ui/navigation";
-
 import { GradientBackground } from "@/components/ui/gradient-background";
 import { UpdatesSection } from "@/components/sections/UpdatesSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { PublicationsSection } from "@/components/sections/PublicationsSection";
 import { useSectionSnap } from "@/hooks/useSectionSnap";
-// Removed Hero component import (reverted as per user request)
 
 export default function Home() {
-  // 需求：只在第一次向下浏览时帮助对齐，不要后续强制回弹
-  // 使用一次性 snap（session 内只触发一次，可通过清空 sessionStorage 复位）
   useSectionSnap(["about", "updates", "projects", "publications"], {
     threshold: 0.25,
     oncePerSession: true,
@@ -18,32 +14,23 @@ export default function Home() {
   });
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden">
+    <div className="relative min-h-screen w-full overflow-hidden">
       <GradientBackground />
       <a href="#main" className="skip-link">Skip to main content</a>
       <Navigation />
 
-
-
       <main id="main" className="relative z-10">
-        <header className="min-h-screen flex items-center justify-center pt-24 pb-8 px-0 md:px-4 lg:px-8" id="about" aria-labelledby="about-heading" data-snap>
-          <div className="w-full">
-            <h1 id="about-heading" className="sr-only">About</h1>
-            {/* 顶部可视 3D 模块 */}
-            <SplineSceneDemo />
-          </div>
-        </header>
-
+        <Hero />
         <UpdatesSection />
         <ProjectsSection />
         <PublicationsSection />
 
-        {/* Footer */}
-        <footer className="py-10 text-center text-sm text-neutral-500 pb-20">
+        <footer className="mx-auto max-w-[1180px] px-4 pb-14 pt-8 text-sm text-[color:var(--muted-ink)] sm:px-6 lg:px-8">
+          <div className="border-t border-[color:var(--line)] pt-8">
           <p>© {new Date().getFullYear()} Ming Ma. All rights reserved.</p>
+          </div>
         </footer>
       </main>
     </div>
   );
 }
-

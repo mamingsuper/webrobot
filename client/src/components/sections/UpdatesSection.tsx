@@ -1,76 +1,68 @@
-
 import { motion } from "framer-motion";
-import { Brain } from "lucide-react";
+import { CalendarDays, CheckCircle2 } from "lucide-react";
 import { updates } from "@/data/content";
 
-const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5 },
-};
-
-const staggerChildren = {
-    animate: {
-        transition: {
-            staggerChildren: 0.1,
-        },
-    },
-};
+const easeOut = [0.16, 0.84, 0.44, 1] as const;
 
 export function UpdatesSection() {
-    return (
-        <section
-            id="updates"
-            className="py-20 sm:py-24 px-4 md:px-8 relative z-10"
-            aria-labelledby="updates-heading"
-            data-snap
-        >
-            <div className="max-w-3xl mx-auto">
-                <motion.h2
-                    id="updates-heading"
-                    className="flex items-center justify-center gap-3 mb-10 heading-2 text-neutral-900"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                >
-                    <Brain className="w-8 h-8 text-amber-600 motion-safe:animate-pulse" />
-                    <span>Recent Updates</span>
-                </motion.h2>
-                <motion.ol
-                    className="relative ml-3 pl-6 border-l border-amber-200/50 space-y-8"
-                    variants={staggerChildren}
-                    initial="initial"
-                    whileInView="animate"
-                    viewport={{ once: true }}
-                    aria-label="Recent chronological updates"
-                >
-                    {updates.map((u, i) => (
-                        <motion.li
-                            key={i}
-                            variants={fadeInUp}
-                            className="relative focus-within:ring-2 focus-within:ring-amber-500 rounded-xl outline-none p-4 hover:bg-white/40 transition-colors duration-300"
-                        >
-                            <span
-                                className="absolute -left-[30px] top-6 w-4 h-4 rounded-full bg-amber-500 ring-4 ring-white/80"
-                                aria-hidden="true"
-                            />
-                            <div className="flex flex-col gap-1">
-                                <div className="flex items-center justify-between flex-wrap gap-2">
-                                    <h3 className="text-lg font-semibold text-neutral-900 leading-snug">
-                                        {u.title}
-                                    </h3>
-                                    <time className="text-sm font-medium tracking-wide uppercase text-neutral-500">
-                                        {u.date}
-                                    </time>
-                                </div>
-                                <p className="text-base text-neutral-700 leading-relaxed max-w-prose">
-                                    {u.content}
-                                </p>
-                            </div>
-                        </motion.li>
-                    ))}
-                </motion.ol>
-            </div>
-        </section>
-    );
+  return (
+    <section id="updates" className="section-shell" aria-labelledby="updates-heading" data-snap>
+      <div className="mx-auto max-w-3xl text-center">
+        <h2 id="updates-heading" className="section-heading mx-auto mt-0">
+          Recent updates
+        </h2>
+      </div>
+
+      <motion.ol
+        className="updates-tree relative mx-auto mt-12 max-w-5xl"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ staggerChildren: 0.08 }}
+        aria-label="Recent chronological updates"
+      >
+        <span className="updates-tree-axis" aria-hidden="true" />
+
+        {updates.map((update, index) => {
+          const isLeft = index % 2 === 0;
+
+          return (
+            <motion.li
+              key={`${update.date}-${update.title}`}
+              className="updates-tree-item"
+              data-side={isLeft ? "left" : "right"}
+              variants={{
+                hidden: { opacity: 0, y: 18 },
+                show: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.48, ease: easeOut }}
+            >
+              <span className="updates-tree-dot" aria-hidden="true">
+                <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--amber)]" />
+              </span>
+
+              <article className="updates-card paper-panel rounded-[1.25rem] p-5 text-left">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="inline-flex items-center gap-1.5 text-sm font-bold text-[color:var(--teal-dark)]">
+                    <CheckCircle2 className="h-4 w-4" />
+                    {update.category}
+                  </span>
+                  <time className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--soft-ink)]">
+                    <CalendarDays className="h-4 w-4" />
+                    {update.date}
+                  </time>
+                </div>
+                <h3 className="mt-3 text-xl font-semibold leading-tight text-[color:var(--ink)]">
+                  {update.title}
+                </h3>
+                <p className="mt-2 text-base leading-relaxed text-[color:var(--muted-ink)]">
+                  {update.content}
+                </p>
+              </article>
+            </motion.li>
+          );
+        })}
+      </motion.ol>
+    </section>
+  );
 }

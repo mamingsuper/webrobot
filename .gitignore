@@ -13,6 +13,10 @@
 # production
 /build
 /dist
+/client/dist/
+
+# local QA screenshots
+qa-*.png
 
 # misc
 .DS_Store

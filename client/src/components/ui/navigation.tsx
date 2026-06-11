@@ -1,91 +1,70 @@
 "use client";
 
-import { Link, useLocation } from "wouter";
-import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { FileText } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { hero } from "@/data/content";
+
+const links = [
+  { href: "#about", label: "About", shortLabel: "About" },
+  { href: "#updates", label: "Updates", shortLabel: "Updates" },
+  { href: "#projects", label: "Projects", shortLabel: "Projects" },
+  { href: "#publications", label: "Publications", shortLabel: "Pubs" },
+];
 
 export function Navigation() {
-  const [location] = useLocation();
-  const [activeSection, setActiveSection] = useState("/");
-
-  const links = [
-    { href: "/", label: "About" },
-    { href: "#updates", label: "Recent Updates" },
-    { href: "#projects", label: "Projects" },
-    { href: "#publications", label: "Publications" },
-    {
-      href: "#",
-      label: "CV",
-      onClick: () => {
-        window.open("/maming_cv.pdf", "_blank");
-      },
-    },
-  ];
+  const [activeSection, setActiveSection] = useState("#about");
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["updates", "projects", "publications"].map(id =>
-        document.getElementById(id)
-      );
+      const sections = links
+        .map((link) => document.getElementById(link.href.slice(1)))
+        .filter(Boolean) as HTMLElement[];
 
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
+      const scrollPosition = window.scrollY + window.innerHeight * 0.28;
+      const current =
+        sections.findLast((section) => scrollPosition >= section.offsetTop) ?? sections[0];
 
-      if (scrollPosition < (sections[0]?.offsetTop || Infinity)) {
-        setActiveSection("/");
-      } else {
-        for (let i = 0; i < sections.length; i++) {
-          const current = sections[i];
-          const next = sections[i + 1];
-
-          if (current && (!next || scrollPosition >= current.offsetTop && scrollPosition < next.offsetTop)) {
-            setActiveSection(`#${current.id}`);
-            break;
-          }
-        }
+      if (current) {
+        setActiveSection(`#${current.id}`);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // 初始化时调用一次
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <div
-      className="fixed top-0 left-0 right-0 z-50 bg-[#fffbf5]/80 backdrop-blur-sm transition-all duration-300"
-    >
-      <nav className="max-w-[1400px] mx-auto px-6 h-20">
-        <div className="flex items-center justify-center md:justify-end h-full gap-2">
+    <div className="fixed left-0 right-0 top-0 z-50 border-b border-[color:var(--line)] bg-[rgba(255,255,255,0.88)] backdrop-blur-md">
+      <nav className="relative mx-auto flex h-[72px] max-w-[1180px] items-center justify-center gap-4 px-4 sm:px-6 lg:px-8">
+        <div className="flex min-w-0 items-center gap-2 overflow-x-auto rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] p-1 shadow-[0_12px_32px_rgba(36,45,44,0.05)]">
           {links.map((link) => (
-            <Link
+            <a
               key={link.href}
               href={link.href}
-              onClick={(e) => {
-                e.preventDefault();
-                if (link.onClick) {
-                  link.onClick();
-                  return;
-                }
-                if (link.href === "/") {
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                } else if (link.href.startsWith("#")) {
-                  const element = document.querySelector(link.href);
-                  element?.scrollIntoView({ behavior: "smooth" });
-                }
-              }}
               className={cn(
-                "nav-link text-lg font-serif tracking-wide px-5 py-2.5 rounded-full transition-all duration-300",
-                "hover:bg-neutral-900/5 hover:scale-105 active:scale-95 text-neutral-800 hover:text-black",
-                activeSection === link.href
-                  ? "bg-neutral-900 text-white shadow-sm"
-                  : ""
+                "nav-link shrink-0 rounded-full px-3.5 py-2 text-sm font-semibold leading-none text-[color:var(--muted-ink)] transition-colors sm:px-4",
+                activeSection === link.href &&
+                  "bg-[color:var(--ink)] text-[color:var(--paper)] hover:text-[color:var(--paper)]"
               )}
             >
-              {link.label}
-            </Link>
+              <span className="sm:hidden">{link.shortLabel}</span>
+              <span className="hidden sm:inline">{link.label}</span>
+            </a>
           ))}
         </div>
+
+        <a
+          href={hero.cv}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute right-4 hidden h-10 shrink-0 items-center gap-2 rounded-full border border-[color:var(--line-strong)] bg-[color:var(--paper)] px-4 text-sm font-semibold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--paper-strong)] md:inline-flex lg:right-8"
+        >
+          <FileText className="h-4 w-4" />
+          CV
+        </a>
       </nav>
     </div>
   );

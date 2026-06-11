@@ -1,56 +1,33 @@
-
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 export function GradientBackground() {
-    return (
-        <div className="fixed inset-0 min-h-screen w-full -z-10 overflow-hidden bg-[#fffbf5]">
-            {/* Organic blurry orbs imitating the 'Liftoff' style */}
+  const reduceMotion = useReducedMotion();
 
-            {/* Warm Orange/Gold Orb */}
-            <motion.div
-                className="absolute top-[-10%] left-[10%] w-[60vw] h-[60vw] rounded-full bg-[#ff9f1c]/20 blur-[130px]"
-                animate={{
-                    x: [0, 50, -20, 0],
-                    y: [0, 30, 0],
-                    scale: [1, 1.1, 0.9, 1],
-                }}
-                transition={{
-                    duration: 25,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                }}
-            />
+  return (
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[color:var(--site-bg)]">
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.032)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.032)_1px,transparent_1px)] bg-[size:52px_52px]" />
+      <div className="absolute left-0 right-0 top-0 h-32 bg-gradient-to-b from-[color:var(--site-bg)] to-transparent" />
+      <div className="absolute inset-y-0 left-[7%] w-px bg-[rgba(15,23,42,0.045)]" />
+      <div className="absolute inset-y-0 right-[9%] hidden w-px bg-[rgba(15,23,42,0.045)] lg:block" />
 
-            {/* Soft Blue/Teal Orb */}
+      {!reduceMotion && (
+        <>
+          {[0, 1, 2].map((line) => (
             <motion.div
-                className="absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#2ec4b6]/20 blur-[130px]"
-                animate={{
-                    x: [0, -30, 20, 0],
-                    y: [0, 60, 20, 0],
-                    scale: [1, 1.2, 1],
-                }}
-                transition={{
-                    duration: 30,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                }}
+              key={line}
+              className="absolute left-[-22%] h-px w-[42%] bg-gradient-to-r from-transparent via-[color:var(--teal)] to-transparent opacity-20"
+              style={{ top: `${28 + line * 19}%` }}
+              animate={{ x: ["0vw", "150vw"] }}
+              transition={{
+                duration: 24 + line * 5,
+                delay: line * 1.8,
+                repeat: Infinity,
+                ease: "linear",
+              }}
             />
-
-            {/* Deep Purple/Pink Orb */}
-            <motion.div
-                className="absolute bottom-[-10%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-[#9d4edd]/15 blur-[150px]"
-                animate={{
-                    x: [0, 40, -40, 0],
-                    y: [0, -40, 0],
-                    scale: [1, 1.1, 1],
-                }}
-                transition={{
-                    duration: 35,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                }}
-            />
-        </div>
-    );
+          ))}
+        </>
+      )}
+    </div>
+  );
 }
-

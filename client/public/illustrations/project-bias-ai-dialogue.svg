@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Citizen and AI bureaucrat in conversation</title>
+  <desc id="desc">A hand-drawn sticker illustration of a citizen at an administrative service counter speaking with an AI bureaucratic interface.</desc>
+  <defs>
+    <filter id="paperNoise" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="17" result="noise" />
+      <feColorMatrix in="noise" type="saturate" values="0" result="mono" />
+      <feBlend in="SourceGraphic" in2="mono" mode="multiply" result="paper" />
+      <feComponentTransfer in="paper">
+        <feFuncA type="table" tableValues="0 0.11" />
+      </feComponentTransfer>
+      <feComposite in="SourceGraphic" in2="paper" operator="over" />
+    </filter>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="145%">
+      <feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#182625" flood-opacity="0.14" />
+    </filter>
+    <style>
+      .ink { stroke: #172625; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .ink-thin { stroke: #172625; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+      .dash { stroke-dasharray: 12 14; }
+      .paper { fill: #fff8ea; }
+      .cream { fill: #f2e4c7; }
+      .teal { fill: #dfece7; }
+      .deep-teal { fill: #2f6362; }
+      .blue-teal { fill: #6f9697; }
+      .ink-fill { fill: #172625; }
+      .amber { fill: #e7ae55; }
+      .amber-soft { fill: #f5d69b; }
+      .none { fill: none; }
+      .label {
+        fill: #172625;
+        font-family: ui-serif, Georgia, "Times New Roman", serif;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+      .micro {
+        fill: #315d5a;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+      }
+    </style>
+  </defs>
+
+  <g filter="url(#softShadow)">
+    <path
+      class="paper ink"
+      filter="url(#paperNoise)"
+      d="M135 484c-43-24-47-83-11-118 26-25 61-21 79-50 21-35 25-81 68-99 47-20 91 19 129 1 38-18 32-68 79-85 47-18 84 20 124 2 50-23 60-90 119-93 68-3 79 73 142 83 48 7 88-25 129-2 39 21 38 68 69 94 27 23 77 15 104 50 34 44 7 94 24 139 16 43 69 58 70 108 1 48-48 72-67 112-19 39 2 88-32 116-37 31-90-4-138 13-48 18-67 72-120 75-51 2-69-45-119-48-50-4-78 39-129 28-49-10-62-60-108-64-49-4-78 47-129 35-43-10-51-52-90-66-49-17-92 31-134 7-40-23-22-78-59-100-35-20-80 8-111-22-31-30-13-76-39-105z"
+    />
+  </g>
+
+  <g aria-hidden="true">
+    <circle class="amber-soft" cx="242" cy="496" r="58" opacity="0.86" />
+    <circle class="teal" cx="991" cy="223" r="78" opacity="0.74" />
+    <circle class="teal" cx="243" cy="285" r="96" opacity="0.62" />
+    <path class="ink-thin none" d="M230 523c-18-64-2-121 42-171" opacity="0.45" />
+    <path class="ink-thin none" d="M1003 166c43 32 68 80 70 132" opacity="0.35" />
+  </g>
+
+  <g aria-label="Administrative counter">
+    <path class="cream ink" d="M198 545h789c32 0 59 26 59 59v24H136v-20c0-35 27-63 62-63z" />
+    <path class="blue-teal ink" d="M155 628h869l-64 74H207z" />
+    <path class="ink-thin none" d="M246 545c4 27 1 55-9 83" opacity="0.45" />
+    <path class="ink-thin none" d="M770 545c-5 30-2 58 10 83" opacity="0.45" />
+  </g>
+
+  <g aria-label="Citizen">
+    <path class="amber-soft ink" d="M292 423c-36 17-61 58-61 105v98h197v-98c0-68-45-123-100-123-12 0-24 3-36 18z" />
+    <path class="blue-teal ink" d="M247 622c-4-65 0-121 29-166 18-28 46-44 80-41 54 6 82 58 78 119l-3 88z" />
+    <path class="ink-fill" d="M284 321c18-48 72-65 121-43 43 19 60 64 42 110-15 39-55 59-100 52-46-7-78-61-63-119z" />
+    <path class="teal ink" d="M306 366c2 50 28 88 70 90 41 2 69-31 73-78 3-46-17-82-66-88-46-6-80 25-77 76z" />
+    <path class="ink-fill" d="M280 343c7-49 44-84 91-83 40 1 72 27 82 64-38-14-71-11-98 8-24 17-43 20-75 11z" />
+    <path class="cream ink" d="M170 491c43 27 92 42 148 45l-6 41c-54 0-104-14-153-43z" />
+    <path class="cream ink" d="M182 526l-35 139 58 18 41-138z" />
+    <path class="ink-thin none" d="M318 543c42-4 82-12 121-25" />
+  </g>
+
+  <g aria-label="AI bureaucrat">
+    <path class="deep-teal ink" d="M821 214h235c34 0 62 28 62 62v249c0 34-28 62-62 62H821c-34 0-62-28-62-62V276c0-34 28-62 62-62z" />
+    <path class="teal ink" d="M801 250h274v253H801z" />
+    <path class="paper ink" d="M853 295h171c18 0 33 15 33 33v54c0 18-15 33-33 33H853c-18 0-33-15-33-33v-54c0-18 15-33 33-33z" />
+    <circle class="amber ink-thin" cx="884" cy="356" r="23" />
+    <circle class="teal ink-thin" cx="993" cy="356" r="23" />
+    <path class="ink-thin none" d="M907 356h62" />
+    <path class="ink-thin none" d="M884 379v28M993 379v28M938 415v43" />
+    <path class="paper ink" d="M836 455h207v78H836z" />
+    <path class="ink-thin none" d="M865 483h55M865 508h132" />
+    <text class="micro" x="947" y="487">AI CASE</text>
+    <path class="ink-thin none" d="M1075 296c20 21 30 55 28 100M802 538c19 18 47 29 79 30" opacity="0.42" />
+  </g>
+
+  <g aria-label="Dialogue layer">
+    <path class="paper ink" d="M458 195h213c26 0 47 21 47 47v187c0 26-21 47-47 47H517l-71 58 18-63c-30-4-53-29-53-60V242c0-26 21-47 47-47z" />
+    <text class="label" x="478" y="253">Rules meet model</text>
+    <text class="micro" x="480" y="288">SERVICE ENCOUNTER</text>
+
+    <path class="ink-thin none" d="M490 343h73v54h-73z" />
+    <path class="ink-thin none" d="M583 343h73v54h-73z" />
+    <path class="ink-thin none" d="M503 360h35M503 380h43M596 360h37M596 380h24" />
+    <path class="amber-soft ink-thin" d="M585 438h49l24 31h-86z" />
+    <path class="ink-thin none" d="M609 396v40" />
+
+    <path class="paper ink" d="M292 199h136c24 0 43 19 43 43v64c0 24-19 43-43 43h-68l-54 42 12-45h-26c-24 0-43-19-43-43v-61c0-24 19-43 43-43z" />
+    <path class="ink-thin none" d="M300 245h113M300 281h86" />
+    <circle class="amber ink-thin" cx="433" cy="275" r="20" />
+    <path class="ink-thin none" d="M424 274l7 8 15-18" />
+
+    <path class="paper ink" d="M828 99h164c25 0 45 20 45 45v65c0 25-20 45-45 45H890l-54 42 11-42h-19c-25 0-45-20-45-45v-65c0-25 20-45 45-45z" />
+    <path class="ink-thin none" d="M826 151h93M826 184h158" />
+    <circle class="teal ink-thin" cx="963" cy="151" r="20" />
+    <path class="ink-thin none" d="M953 151h20M963 141v20" />
+
+    <path class="ink-thin none dash" d="M432 350c58 37 123 43 194 17 65-25 116-19 153 18" />
+    <path class="ink-thin none dash" d="M716 265c39-29 73-44 102-45" />
+    <path class="ink-thin none dash" d="M713 457c54 58 116 81 188 67" />
+    <circle class="deep-teal" cx="642" cy="358" r="10" />
+    <circle class="amber" cx="719" cy="458" r="10" />
+    <circle class="deep-teal" cx="815" cy="220" r="10" />
+  </g>
+
+  <g aria-label="Institutional documents">
+    <path class="paper ink" d="M923 593l113 15-11 86-113-15z" />
+    <path class="ink-thin none" d="M944 628l57 8M941 654l66 9" />
+    <path class="amber-soft ink-thin" d="M1014 591l57 7-17 32-44-5z" />
+    <path class="teal ink" d="M678 558h93c19 0 34 15 34 34v62c0 19-15 34-34 34h-93c-19 0-34-15-34-34v-62c0-19 15-34 34-34z" />
+    <path class="ink-thin none" d="M685 604h82M685 630h53" />
+    <circle class="amber ink-thin" cx="775" cy="631" r="16" />
+  </g>
+</svg>
