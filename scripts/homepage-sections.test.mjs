@@ -401,7 +401,7 @@ test("portfolio visual overrides keep particles visible and content aligned", as
     css,
     /\.publication-ledger h3\s*\{[^}]*max-width:\s*none;[^}]*width:\s*100%;/s,
   );
-  assert.match(css, /--act-title-size:\s*clamp\(2\.25rem, 3vw, 3\.5rem\);/);
+  assert.match(css, /--act-title-size:\s*clamp\(1\.9rem, 2\.35vw, 2\.75rem\);/);
   assert.match(css, /\.record-title\s*\{[^}]*font-size:\s*clamp\(1\.35rem, 1\.9vw, 2\.1rem\);/s);
   assert.match(
     css,

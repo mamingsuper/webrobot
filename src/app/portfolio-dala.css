@@ -2,7 +2,7 @@
   --archive-paper: #d8d2c4;
   --archive-dim: #817d75;
   --archive-line: rgb(216 210 196 / 18%);
-  --act-title-size: clamp(2.25rem, 3vw, 3.5rem);
+  --act-title-size: clamp(1.9rem, 2.35vw, 2.75rem);
   --hero-name-size: clamp(3.5rem, 6.6vw, 7.25rem);
   --body-readable: rgb(236 232 224 / 82%);
   --body-secondary: rgb(216 210 196 / 68%);

@@ -110,10 +110,10 @@ export function resolveDalaStageState(
   }
 
   const localProgress = clamped - from;
-  const explodeRise = mapUnitWindow(localProgress, 0.38, 0.5);
-  const explodeFall = mapUnitWindow(localProgress, 0.64, 0.78);
-  const sweepRise = mapUnitWindow(localProgress, 0.35, 0.52);
-  const sweepFall = mapUnitWindow(localProgress, 0.55, 0.78);
+  const explodeRise = mapUnitWindow(localProgress, 0.25, 0.37);
+  const explodeFall = mapUnitWindow(localProgress, 0.5, 0.64);
+  const sweepRise = mapUnitWindow(localProgress, 0.22, 0.39);
+  const sweepFall = mapUnitWindow(localProgress, 0.41, 0.64);
   const amount = quintic(sweepRise) * (1 - quintic(sweepFall));
   const choreography = TRANSITION_CHOREOGRAPHY[from];
   const sweep = amount === 0
@@ -127,7 +127,7 @@ export function resolveDalaStageState(
   return {
     from,
     to,
-    morph: mapUnitWindow(localProgress, 0.35, 0.78),
+    morph: mapUnitWindow(localProgress, 0.22, 0.64),
     explode: clampUnit(explodeRise - explodeFall),
     settledStage: from,
     sweep,

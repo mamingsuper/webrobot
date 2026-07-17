@@ -80,7 +80,7 @@ test("stage damping is frame-rate independent", () => {
 });
 
 test("Dala target migration and expansion settle before the incoming section", () => {
-  const stable = resolveDalaStageState(0.34);
+  const stable = resolveDalaStageState(0.21);
   assert.deepEqual(stable, {
     from: 0,
     to: 1,
@@ -90,23 +90,23 @@ test("Dala target migration and expansion settle before the incoming section", (
     sweep: { x: 0, y: 0, spin: 0 },
   });
 
-  const rising = resolveDalaStageState(0.44);
-  assert.ok(Math.abs(rising.morph - 9 / 43) < 1e-12);
+  const rising = resolveDalaStageState(0.31);
+  assert.ok(Math.abs(rising.morph - 3 / 14) < 1e-12);
   assert.ok(Math.abs(rising.explode - 0.5) < 1e-12);
+  assert.equal(resolveDalaStageState(0.37).explode, 1);
+  assert.equal(resolveDalaStageState(0.43).explode, 1);
   assert.equal(resolveDalaStageState(0.5).explode, 1);
-  assert.equal(resolveDalaStageState(0.57).explode, 1);
-  assert.equal(resolveDalaStageState(0.64).explode, 1);
 
-  const falling = resolveDalaStageState(0.71);
-  assert.ok(Math.abs(falling.morph - 36 / 43) < 1e-12);
+  const falling = resolveDalaStageState(0.57);
+  assert.ok(Math.abs(falling.morph - 5 / 6) < 1e-12);
   assert.ok(Math.abs(falling.explode - 0.5) < 1e-12);
 
   for (const offset of [0, 1, 2]) {
-    assert.ok(resolveDalaStageState(offset + 0.35).morph < 1e-12);
+    assert.ok(resolveDalaStageState(offset + 0.22).morph < 1e-12);
+    assert.ok(Math.abs(resolveDalaStageState(offset + 0.37).explode - 1) < 1e-12);
     assert.ok(Math.abs(resolveDalaStageState(offset + 0.5).explode - 1) < 1e-12);
-    assert.ok(Math.abs(resolveDalaStageState(offset + 0.64).explode - 1) < 1e-12);
-    assert.equal(resolveDalaStageState(offset + 0.78).morph, 1);
-    assert.equal(resolveDalaStageState(offset + 0.78).explode, 0);
+    assert.equal(resolveDalaStageState(offset + 0.64).morph, 1);
+    assert.equal(resolveDalaStageState(offset + 0.64).explode, 0);
   }
   assert.deepEqual(resolveDalaStageState(3), {
     from: 3,
@@ -124,7 +124,7 @@ test("transition choreography exposes sweep and the upgraded shader uniforms", a
     read("src/lib/particle-runtime/three-shaders.ts"),
     read("src/lib/particle-runtime/three-kernel.ts"),
   ]);
-  const sweeping = resolveDalaStageState(0.5).sweep;
+  const sweeping = resolveDalaStageState(0.37).sweep;
   assert.ok(sweeping.x < 0);
   assert.ok(sweeping.y > 0);
   assert.ok(sweeping.spin > 0);
