@@ -2,7 +2,7 @@
   --archive-paper: #d8d2c4;
   --archive-dim: #817d75;
   --archive-line: rgb(216 210 196 / 18%);
-  --act-title-size: clamp(3rem, 6vw, 6.75rem);
+  --act-title-size: clamp(2.25rem, 3vw, 3.5rem);
   --hero-name-size: clamp(3.5rem, 6.6vw, 7.25rem);
   --body-readable: rgb(236 232 224 / 82%);
   --body-secondary: rgb(216 210 196 / 68%);
@@ -228,7 +228,7 @@
   min-width: 0;
   overflow-wrap: anywhere;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.45rem, 2.2vw, 2.35rem);
+  font-size: clamp(1.35rem, 1.9vw, 2.1rem);
   font-weight: 400;
   letter-spacing: -.03em;
   line-height: 1.08;
@@ -501,7 +501,9 @@
   }
 
   .research-act .act-heading {
-    position: static;
+    position: relative;
+    top: clamp(.5rem, .7vw, .85rem);
+    left: clamp(.75rem, 1vw, 1.25rem);
     width: 60%;
     margin-bottom: clamp(2rem, 4vw, 3.5rem);
   }
@@ -513,7 +515,9 @@
   }
 
   .publications-act .act-heading {
-    position: static;
+    position: relative;
+    top: clamp(.5rem, .7vw, .85rem);
+    left: clamp(.75rem, 1vw, 1.25rem);
     width: 60%;
     margin-bottom: clamp(2rem, 4vw, 3.5rem);
   }

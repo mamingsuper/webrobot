@@ -42,7 +42,7 @@ export function mapScrollOffsetToProgress(
 }
 
 export function dampProgress(current: number, target: number, deltaSeconds: number) {
-  const damping = 10;
+  const damping = 16;
   const alpha = 1 - Math.exp(-damping * Math.max(0, deltaSeconds));
   return current + (target - current) * alpha;
 }

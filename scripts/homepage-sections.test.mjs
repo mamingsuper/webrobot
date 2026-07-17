@@ -383,11 +383,11 @@ test("portfolio visual overrides keep particles visible and content aligned", as
   );
   assert.match(
     css,
-    /@media \(min-width:\s*768px\)[\s\S]*\.research-act \.act-heading\s*\{[^}]*position:\s*static;[^}]*width:\s*60%;/s,
+    /@media \(min-width:\s*768px\)[\s\S]*\.research-act \.act-heading\s*\{[^}]*position:\s*relative;[^}]*top:\s*clamp\(\.5rem, \.7vw, \.85rem\);[^}]*left:\s*clamp\(\.75rem, 1vw, 1\.25rem\);[^}]*width:\s*60%;/s,
   );
   assert.match(
     css,
-    /@media \(min-width:\s*768px\)[\s\S]*\.publications-act \.act-heading\s*\{[^}]*position:\s*static;[^}]*width:\s*60%;/s,
+    /@media \(min-width:\s*768px\)[\s\S]*\.publications-act \.act-heading\s*\{[^}]*position:\s*relative;[^}]*top:\s*clamp\(\.5rem, \.7vw, \.85rem\);[^}]*left:\s*clamp\(\.75rem, 1vw, 1\.25rem\);[^}]*width:\s*60%;/s,
   );
   assert.match(
     css,
@@ -401,7 +401,8 @@ test("portfolio visual overrides keep particles visible and content aligned", as
     css,
     /\.publication-ledger h3\s*\{[^}]*max-width:\s*none;[^}]*width:\s*100%;/s,
   );
-  assert.match(css, /--act-title-size:\s*clamp\(3rem, 6vw, 6\.75rem\);/);
+  assert.match(css, /--act-title-size:\s*clamp\(2\.25rem, 3vw, 3\.5rem\);/);
+  assert.match(css, /\.record-title\s*\{[^}]*font-size:\s*clamp\(1\.35rem, 1\.9vw, 2\.1rem\);/s);
   assert.match(
     css,
     /@media \(min-width:\s*768px\)[\s\S]*\.research-act,\s*\.publications-act\s*\{[^}]*padding-top:\s*clamp\(5\.5rem, 7\.5vw, 8rem\);/s,

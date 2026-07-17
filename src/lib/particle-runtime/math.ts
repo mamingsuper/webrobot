@@ -86,8 +86,9 @@ function mapUnitWindow(value: number, start: number, end: number) {
 
 /**
  * Resolves the scroll-driven transition windows used by the Dala reference.
- * The page may scroll continuously, but target migration only starts in the
- * final 30% of each section and the expansion pulse has its own narrower arc.
+ * Target migration leads the incoming section: it begins while the outgoing
+ * section still dominates and settles before the next section reaches its
+ * final position. The expansion pulse stays inside that earlier morph window.
  */
 export function resolveDalaStageState(
   progress: number,
@@ -109,10 +110,10 @@ export function resolveDalaStageState(
   }
 
   const localProgress = clamped - from;
-  const explodeRise = mapUnitWindow(localProgress, 0.72, 0.82);
-  const explodeFall = mapUnitWindow(localProgress, 0.9, 1);
-  const sweepRise = mapUnitWindow(localProgress, 0.7, 0.85);
-  const sweepFall = mapUnitWindow(localProgress, 0.85, 1);
+  const explodeRise = mapUnitWindow(localProgress, 0.38, 0.5);
+  const explodeFall = mapUnitWindow(localProgress, 0.64, 0.78);
+  const sweepRise = mapUnitWindow(localProgress, 0.35, 0.52);
+  const sweepFall = mapUnitWindow(localProgress, 0.55, 0.78);
   const amount = quintic(sweepRise) * (1 - quintic(sweepFall));
   const choreography = TRANSITION_CHOREOGRAPHY[from];
   const sweep = amount === 0
@@ -126,7 +127,7 @@ export function resolveDalaStageState(
   return {
     from,
     to,
-    morph: mapUnitWindow(localProgress, 0.7, 1),
+    morph: mapUnitWindow(localProgress, 0.35, 0.78),
     explode: clampUnit(explodeRise - explodeFall),
     settledStage: from,
     sweep,
