@@ -247,8 +247,10 @@ export const particleVertexShader = `
     mat3 rotation = rotateZ(metadata.y * 6.2831853 + rotationTime * metadata.w * 0.31)
       * rotateY(seed * 5.71 + rotationTime * (0.18 + metadata.w * 0.21))
       * rotateX(metadata.y * 8.13 + rotationTime * 0.13);
-    float diameterPixels = mix(6.1, 12.2, pow(hash(seed + 2.3), 1.4));
-    float glyphRadius = diameterPixels * 1.42 * (2.0 * uViewHalfHeight / uViewportHeight);
+    float sizeAccent = smoothstep(0.93, 0.995, hash(seed + 11.7));
+    float diameterPixels = mix(8.0, 13.5, pow(hash(seed + 2.3), 1.65));
+    diameterPixels *= mix(1.0, 1.38, sizeAccent);
+    float glyphRadius = diameterPixels * 1.44 * (2.0 * uViewHalfHeight / uViewportHeight);
     glyphRadius *= max(style.x, 0.05) * (1.0 + hover * HOVER_SCALE);
     vec3 worldPosition = center + rotation * position * glyphRadius;
 
@@ -363,7 +365,7 @@ export const foregroundVertexShader = `
     vec3 worldPosition = center + rotation * position * glyphRadius;
     vWorldPosition = worldPosition;
     vColor = instanceColor;
-    vAlpha = mix(0.22, 0.52, instancePhase);
+    vAlpha = mix(0.28, 0.62, instancePhase);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(worldPosition, 1.0);
   }
 `;
@@ -389,6 +391,7 @@ export const vignetteGrainShader = {
     uTime: { value: 0 },
     uOffset: { value: 0.3 },
     uDarkness: { value: 4 },
+    uBackdropOffset: { value: null },
   },
   vertexShader: `
     varying vec2 vUv;
@@ -402,6 +405,7 @@ export const vignetteGrainShader = {
     uniform float uTime;
     uniform float uOffset;
     uniform float uDarkness;
+    uniform vec2 uBackdropOffset;
     varying vec2 vUv;
 
     float hash(vec2 value) {
@@ -412,6 +416,26 @@ export const vignetteGrainShader = {
       vec4 source = texture2D(tDiffuse, vUv);
       vec2 centered = (vUv - 0.5) * vec2(uOffset);
       vec3 vignette = mix(source.rgb, vec3(1.0 - uDarkness), dot(centered, centered));
+      vec2 plateUv = vUv - 0.5 + uBackdropOffset * vec2(1.25, 1.0);
+      plateUv += vec2(
+        plateUv.y * uBackdropOffset.x * 0.75,
+        -plateUv.x * uBackdropOffset.y * 0.58
+      );
+      float weaveA = 0.5 + 0.5 * sin(
+        (plateUv.x * 238.0 + plateUv.y * 151.0) * 6.2831853
+      );
+      float weaveB = 0.5 + 0.5 * sin(
+        (plateUv.x * 173.0 - plateUv.y * 271.0) * 6.2831853
+      );
+      float wovenPlate = pow(weaveA * weaveB, 3.4);
+      float matteBands = smoothstep(0.30, 0.70, 0.5 + 0.5 * sin(
+        (plateUv.x * 1.8 + plateUv.y * 0.72) * 6.2831853
+      ));
+      float sourceLight = dot(source.rgb, vec3(0.2126, 0.7152, 0.0722));
+      float darkBackground = 1.0 - smoothstep(0.025, 0.24, sourceLight);
+      vec3 plateColor = vec3(0.042, 0.038, 0.056)
+        * (0.34 + wovenPlate * 0.92 + matteBands * 0.34);
+      vignette += plateColor * darkBackground;
       float grain = (hash(vUv * 1400.0 + fract(uTime) * 31.0) - 0.5) * 0.012;
       gl_FragColor = vec4(max(vignette + grain, vec3(0.0)), source.a);
     }

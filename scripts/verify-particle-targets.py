@@ -103,7 +103,7 @@ def spatial_sort_key(points: np.ndarray, stage_index: int) -> np.ndarray:
     if stage_index == 0:
         return -points[:, 1]
     if stage_index == 1:
-        return points[:, 0]
+        return -points[:, 0]
     if stage_index == 2:
         return -points[:, 0]
     return -points[:, 1]
@@ -129,9 +129,7 @@ def validate_contract(targets: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     for stage_index, label in enumerate(("About", "Project", "Publication", "Contact")):
         points = positions[stage_index, :, :3]
         spans = np.ptp(points, axis=0)
-        # The Project profile is deliberately planar (z std ~0.07) so the
-        # silhouette stays crisp under the deep z-spread and depth of field.
-        minimum_spans = np.array((0.60, 0.60, 0.30)) if stage_index == 1 else 0.60
+        minimum_spans = 0.60
         require(bool(np.all(spans >= minimum_spans)), f"{label} XYZ spans are too small: {spans.tolist()}.")
         mobile_spans = np.ptp(points[:7_000], axis=0)
         require(
@@ -161,47 +159,64 @@ def validate_contract(targets: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 
 def validate_about(about: np.ndarray, structure_mask: np.ndarray) -> None:
     x, y, z = about[:, :3].T
-    gap = (x >= 0.672) & (x <= 0.723) & (y >= 0.553) & (y <= 0.819)
-    require(int(gap.sum()) == 0, f"About braid touches the head ({int(gap.sum())} gap points).")
-    upper_braid = structure_mask & (x > 0.735) & (y >= 0.71) & (y <= 0.82)
-    lower_braid = structure_mask & (x > 0.735) & (y >= 0.42) & (y <= 0.52)
-    require(int(upper_braid.sum()) >= 400, "About upper braid is undersampled.")
-    require(int(lower_braid.sum()) >= 120, "About tapered braid tip is undersampled.")
-    upper_width = float(np.ptp(x[upper_braid]))
-    lower_width = float(np.ptp(x[lower_braid]))
-    require(lower_width < upper_width * 0.58, "About braid tip does not visibly taper.")
+    head = structure_mask & (x > 0.32) & (x < 0.76) & (y > 0.64) & (y < 0.90)
+    face = structure_mask & (x > 0.32) & (x < 0.65) & (y > 0.67) & (y < 0.84)
+    antennas = structure_mask & (x > 0.34) & (x < 0.70) & (y > 0.88)
+    flower = structure_mask & (x < 0.35) & (y > 0.43) & (y < 0.69)
+    torso = structure_mask & (x > 0.34) & (x < 0.68) & (y > 0.34) & (y < 0.65)
+    legs = structure_mask & (x > 0.34) & (x < 0.68) & (y < 0.36)
+    require(int(head.sum()) >= 2_600, "About robot lost its smiling box head.")
+    require(int(face.sum()) >= 1_200, "About robot lost its readable face panel.")
+    require(int(antennas.sum()) >= 160, "About robot lost its twin antennas.")
+    require(int(flower.sum()) >= 650, "About robot lost its flower gesture.")
+    require(int(torso.sum()) >= 2_000, "About robot lost its compact torso.")
+    require(int(legs.sum()) >= 1_300, "About robot lost its legs and block feet.")
     mobile = np.arange(POINT_COUNT) < 7_000
-    require(int((upper_braid & mobile).sum()) >= 280, "First 7,000 points lose the About upper braid.")
-    require(int((lower_braid & mobile).sum()) >= 80, "First 7,000 points lose the About braid tip.")
-    require(float(np.ptp(z[structure_mask])) >= 0.35, "About lacks meaningful front/back depth.")
+    require(int((face & mobile).sum()) >= 850,
+            "First 7,000 points lose the About robot face.")
+    require(int((flower & mobile).sum()) >= 450,
+            "First 7,000 points lose the About robot flower.")
+    require(int((legs & mobile).sum()) >= 900,
+            "First 7,000 points lose the About robot legs.")
+    require(float(np.ptp(z[structure_mask])) >= 0.50, "About lacks meaningful front/back depth.")
 
 
-def validate_profile(
+def validate_human_profile(
     about: np.ndarray,
     project: np.ndarray,
     project_styles: np.ndarray,
     structure_mask: np.ndarray,
-    braid: np.ndarray,
 ) -> None:
-    # Stage 1 must be the exact stage-0 person with the horizontal axis flipped
-    # (x -> 1 - x): same identity, same braid, just facing the other way.
-    require(int(braid.sum()) == 1_350, "Project profile lost braid particle identity.")
-    mirror_error = np.abs(project[:, 0] - (1.0 - about[:, 0]))
-    require(float(mirror_error.mean()) <= 0.01 and float(mirror_error.max()) <= 0.04,
-            "Project is not a clean horizontal mirror of About along x.")
-    depth_error = np.abs(project[:, 2] - about[:, 2])
-    vertical_error = np.abs(project[:, 1] - about[:, 1])
-    require(float(vertical_error.max()) <= 0.01 and float(depth_error.max()) <= 0.01,
-            "Project changed more than the horizontal facing (y or z drifted).")
-    require(float(np.corrcoef(about[:, 0], project[:, 0])[0, 1]) <= -0.98,
-            "Project x is not anti-correlated with About x, so the figure did not flip.")
+    x, y, z = project[:, :3].T
+    nose = structure_mask & (x > 0.70) & (y > 0.42) & (y < 0.68)
+    rear_cranium = structure_mask & (x < 0.36) & (y > 0.55)
+    neck = structure_mask & (x < 0.56) & (y < 0.28)
+    jaw = structure_mask & (x > 0.54) & (y > 0.25) & (y < 0.45)
+    require(int(nose.sum()) >= 450, "Project human profile lost its right-facing nose and lips.")
+    require(int(rear_cranium.sum()) >= 900, "Project human profile lost its rear cranium.")
+    require(int(neck.sum()) >= 1_000, "Project human profile lost its neck.")
+    require(int(jaw.sum()) >= 700, "Project human profile lost its jawline.")
     require(float(np.ptp(project[structure_mask, 2])) >= 0.30,
-            "Project profile lacks front/back depth.")
-    # Because it is a pure mirror, the mobile subset coverage is inherited from
-    # About; assert the flipped figure still spans a full silhouette.
+            "Project human profile lacks front/back facial depth.")
+    warm = np.isclose(project_styles[:, 1:4], DALA_PALETTE[0]).all(axis=1) \
+        | np.isclose(project_styles[:, 1:4], DALA_PALETTE[3]).all(axis=1)
+    cool = np.isclose(project_styles[:, 1:4], DALA_PALETTE[1]).all(axis=1) \
+        | np.isclose(project_styles[:, 1:4], DALA_PALETTE[2]).all(axis=1)
+    require(float(warm[structure_mask].mean()) >= 0.74,
+            "Project human profile lost its warm/pale color emphasis.")
+    require(0.15 <= float(cool[structure_mask].mean()) <= 0.30,
+            "Project human profile needs restrained cool-color depth accents.")
     mobile = project[:7_000]
-    require(bool(np.all(np.ptp(mobile[:, :2], axis=0) >= 0.60)),
-            "First 7,000 Project points no longer cover the mirrored figure.")
+    require(bool(np.all(np.ptp(mobile[:, :2], axis=0) >= np.ptp(project[:, :2], axis=0) * 0.94)),
+            "First 7,000 Project points no longer cover the human profile.")
+    mobile_ids = np.arange(POINT_COUNT) < 7_000
+    require(int((nose & mobile_ids).sum()) >= 300,
+            "First 7,000 Project points lose the right-facing nose.")
+    require(int((neck & mobile_ids).sum()) >= 650,
+            "First 7,000 Project points lose the human neck.")
+    displacement = np.linalg.norm(project[:, :3] - about[:, :3], axis=1)
+    require(float(displacement.mean()) <= 0.30,
+            "About→Project semantic matching is too abrupt for a smooth face morph.")
 
 
 def covariance_eigenvalue_ratio(points: np.ndarray) -> float:
@@ -337,14 +352,14 @@ def main() -> None:
     targets, encoded = parse_binary(OUTPUT_BINARY)
     positions, styles = validate_contract(targets)
     structure_mask, halo_mask = particle_category_masks()
-    regenerated_about, profile_braid, _ = module.generate_about_points(
+    regenerated_about, _ = module.generate_about_points(
         positions[0, :, 3], include_masks=True
     )
     require(np.array_equal(regenerated_about, positions[0, :, :3]),
             "Stage-0 semantic masks no longer align with the checked-in binary.")
     require(700 <= int(halo_mask[:7_000].sum()) <= 1_000, "First 7,000 points have a bad halo ratio.")
     validate_about(positions[0], structure_mask)
-    validate_profile(positions[0], positions[1], styles[1], structure_mask, profile_braid)
+    validate_human_profile(positions[0], positions[1], styles[1], structure_mask)
     validate_book(positions[2], styles[2], structure_mask, halo_mask)
     validate_saturn(positions[3], structure_mask, halo_mask)
     validate_matching(positions, structure_mask, halo_mask)

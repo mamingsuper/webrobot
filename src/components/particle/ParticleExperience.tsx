@@ -13,7 +13,7 @@ import {
   type ScrollDirector,
 } from "@/lib/portfolio-runtime/scroll-director";
 
-const targetUrl = "/particles/portfolio-targets.bin?v=8469cf46";
+const targetUrl = "/particles/portfolio-targets.bin?v=4d0d30fa";
 
 type DebuggableParticleEngine = ParticleEngineInstance & {
   setDebugTime?: (seconds: number | null) => void;

@@ -101,7 +101,14 @@ test("Three.js engine owns two-target FBO, 3D foreground and restrained post-pro
   assert.match(shaders, /const float FRICTION = 0\.892/);
   assert.match(shaders, /HOVER_RADIUS = 0\.78/);
   assert.match(shaders, /HOVER_SCALE = 0\.04/);
-  assert.match(shaders, /diameterPixels = mix\(6\.1, 12\.2/);
+  assert.match(shaders, /diameterPixels = mix\(8\.0, 13\.5/);
+  assert.match(shaders, /float sizeAccent = smoothstep/);
+  assert.match(shaders, /uniform vec2 uBackdropOffset/);
+  assert.match(shaders, /float wovenPlate = pow/);
+  assert.match(engine, /backdropDamping: 1\.35/);
+  assert.match(engine, /backdropX: 0\.11/);
+  assert.match(engine, /foregroundX: -0\.32/);
+  assert.match(engine, /heroShard/);
   assert.match(shaders, /float sweepBand = exp/);
   assert.match(shaders, /float spotlight = pow/);
   assert.match(shaders, /float theatreLight = clamp/);

@@ -53,6 +53,15 @@ const CAMERA_NEAR = 0.1;
 const CAMERA_FAR = 30;
 const TAU = Math.PI * 2;
 const PARTICLE_COLOR_BOOST = 1.1;
+const PARALLAX = Object.freeze({
+  backdropDamping: 1.35,
+  backdropX: 0.11,
+  backdropY: 0.075,
+  foregroundX: -0.32,
+  foregroundY: -0.22,
+  cameraX: -0.06,
+  cameraY: -0.038,
+});
 
 function errorFrom(value: unknown) {
   return value instanceof Error ? value : new Error(String(value));
@@ -147,6 +156,7 @@ export class ParticleEngine {
   private pointer = { x: 0, y: 0 };
   private pointerDelta = { x: 0, y: 0 };
   private pointerInfluence = 0;
+  private backdrop = { x: 0, y: 0 };
   private sweep = { x: 0, y: 0, spin: 0 };
   private occlusionStrength = 0;
   private impulse = { origin: { x: 0.5, y: 0.5 }, age: 0, strength: 0 };
@@ -621,11 +631,15 @@ export class ParticleEngine {
     const palette = DALA_FOREGROUND_PALETTE.map((value) => new THREE.Color(value));
     for (let index = 0; index < DALA_FOREGROUND_PARTICLE_COUNT; index += 1) {
       const phase = deterministicHash(index * 3.173 + 0.37);
+      const scaleSeed = deterministicHash(index * 13.31);
+      const heroShard = deterministicHash(index * 17.89 + 0.2) > 0.92;
       const positionOffset = index * 3;
       positions[positionOffset] = deterministicHash(index * 5.71 + 1.1) * 5.6 - 2.8;
       positions[positionOffset + 1] = deterministicHash(index * 7.13 + 2.7) * 4.8 - 2.4;
       positions[positionOffset + 2] = deterministicHash(index * 11.17 + 4.2) * 6 - 3.4;
-      scales[index] = 12 + Math.pow(deterministicHash(index * 13.31), 1.5) * 23;
+      scales[index] = heroShard
+        ? 34 + Math.pow(scaleSeed, 0.75) * 30
+        : 8 + Math.pow(scaleSeed, 1.7) * 13;
       const color = palette[Math.floor(phase * palette.length)];
       colors[positionOffset] = color.r;
       colors[positionOffset + 1] = color.g;
@@ -658,6 +672,7 @@ export class ParticleEngine {
     this.outputPass = new OutputPass();
     this.vignettePass.uniforms.uOffset.value = DALA_POSTPROCESSING.vignetteOffset;
     this.vignettePass.uniforms.uDarkness.value = DALA_POSTPROCESSING.vignetteDarkness;
+    this.vignettePass.uniforms.uBackdropOffset.value = new THREE.Vector2();
     this.composer.addPass(this.renderPass);
     this.composer.addPass(this.bokehPass);
     this.composer.addPass(this.vignettePass);
@@ -692,6 +707,20 @@ export class ParticleEngine {
       this.pointerInfluence,
       this.pointerTarget.active ? 1 : 0,
       4.7,
+      delta,
+    );
+    const backdropTargetX = this.pointerTarget.active ? this.pointerTarget.x : 0;
+    const backdropTargetY = this.pointerTarget.active ? this.pointerTarget.y : 0;
+    this.backdrop.x = damp(
+      this.backdrop.x,
+      backdropTargetX,
+      PARALLAX.backdropDamping,
+      delta,
+    );
+    this.backdrop.y = damp(
+      this.backdrop.y,
+      backdropTargetY,
+      PARALLAX.backdropDamping,
       delta,
     );
     this.pointerDelta.x = damp(this.pointerDelta.x, 0, 6, delta);
@@ -820,20 +849,28 @@ export class ParticleEngine {
       ? 0
       : this.elapsedSeconds;
     foregroundMaterial.uniforms.uParallax.value.set(
-      this.options.reducedMotion ? 0 : this.pointer.x * this.pointerInfluence * -0.12,
-      this.options.reducedMotion ? 0 : this.pointer.y * this.pointerInfluence * -0.08,
+      this.options.reducedMotion
+        ? 0
+        : this.pointer.x * this.pointerInfluence * PARALLAX.foregroundX,
+      this.options.reducedMotion
+        ? 0
+        : this.pointer.y * this.pointerInfluence * PARALLAX.foregroundY,
     );
     camera.position.x = this.options.reducedMotion
       ? 0
-      : this.pointer.x * this.pointerInfluence * -0.08;
+      : this.pointer.x * this.pointerInfluence * PARALLAX.cameraX;
     camera.position.y = this.options.reducedMotion
       ? 0
-      : this.pointer.y * this.pointerInfluence * -0.05;
+      : this.pointer.y * this.pointerInfluence * PARALLAX.cameraY;
     camera.lookAt(0, 0, 0);
     if (this.vignettePass) {
       this.vignettePass.uniforms.uTime.value = this.options.reducedMotion
         ? 0
         : this.elapsedSeconds;
+      this.vignettePass.uniforms.uBackdropOffset.value.set(
+        this.options.reducedMotion ? 0 : this.backdrop.x * PARALLAX.backdropX,
+        this.options.reducedMotion ? 0 : this.backdrop.y * PARALLAX.backdropY,
+      );
     }
     composer.render(delta);
   }

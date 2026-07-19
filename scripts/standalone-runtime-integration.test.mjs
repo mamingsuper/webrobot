@@ -92,19 +92,20 @@ test("Dala target migration and expansion settle before the incoming section", (
 
   const rising = resolveDalaStageState(0.31);
   assert.ok(Math.abs(rising.morph - 3 / 14) < 1e-12);
-  assert.ok(Math.abs(rising.explode - 0.5) < 1e-12);
-  assert.equal(resolveDalaStageState(0.37).explode, 1);
-  assert.equal(resolveDalaStageState(0.43).explode, 1);
-  assert.equal(resolveDalaStageState(0.5).explode, 1);
+  assert.ok(Math.abs(rising.explode - 0.12) < 1e-12);
+  assert.equal(resolveDalaStageState(0.37).explode, 0.24);
+  assert.equal(resolveDalaStageState(0.43).explode, 0.24);
+  assert.equal(resolveDalaStageState(0.5).explode, 0.24);
 
   const falling = resolveDalaStageState(0.57);
   assert.ok(Math.abs(falling.morph - 5 / 6) < 1e-12);
-  assert.ok(Math.abs(falling.explode - 0.5) < 1e-12);
+  assert.ok(Math.abs(falling.explode - 0.12) < 1e-12);
 
   for (const offset of [0, 1, 2]) {
     assert.ok(resolveDalaStageState(offset + 0.22).morph < 1e-12);
-    assert.ok(Math.abs(resolveDalaStageState(offset + 0.37).explode - 1) < 1e-12);
-    assert.ok(Math.abs(resolveDalaStageState(offset + 0.5).explode - 1) < 1e-12);
+    const expectedPeak = offset === 0 ? 0.24 : 1;
+    assert.ok(Math.abs(resolveDalaStageState(offset + 0.37).explode - expectedPeak) < 1e-12);
+    assert.ok(Math.abs(resolveDalaStageState(offset + 0.5).explode - expectedPeak) < 1e-12);
     assert.equal(resolveDalaStageState(offset + 0.64).morph, 1);
     assert.equal(resolveDalaStageState(offset + 0.64).explode, 0);
   }
@@ -133,6 +134,9 @@ test("transition choreography exposes sweep and the upgraded shader uniforms", a
   assert.match(engine, /uCloudSpin/);
   assert.match(engine, /uOcclusionStrength/);
   assert.match(engine, /uColorBoost/);
+  assert.match(engine, /uBackdropOffset/);
+  assert.match(engine, /PARALLAX\.foregroundX/);
+  assert.match(shaders, /wovenPlate/);
 });
 
 test("default runtime owns one canvas and manual Dala fallback is explicit", async () => {

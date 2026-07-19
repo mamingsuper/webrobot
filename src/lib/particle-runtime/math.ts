@@ -29,13 +29,13 @@ export type DalaStageState = {
 };
 
 export const TRANSITION_CHOREOGRAPHY = [
-  { dx: -0.34, dy: 0.04, spin: 0.25 * Math.PI },
-  { dx: 0.28, dy: -0.06, spin: -0.33 * Math.PI },
-  { dx: 0.1, dy: -0.16, spin: 0.5 * Math.PI },
+  { dx: -0.34, dy: 0.04, spin: 0.25 * Math.PI, explode: 0.24 },
+  { dx: 0.28, dy: -0.06, spin: -0.33 * Math.PI, explode: 1 },
+  { dx: 0.1, dy: -0.16, spin: 0.5 * Math.PI, explode: 1 },
 ] as const;
 
 export const STAGE_PLACEMENTS: readonly StagePlacement[] = [
-  { x: 0.3, y: 0.01, scale: 1.68 },
+  { x: 0.3, y: -0.11, scale: 1.82 },
   { x: -0.54, y: -0.1, scale: 1.38 },
   { x: -0.55, y: -0.3, scale: 1.2 },
   { x: 0.28, y: 0.0, scale: 1.3 },
@@ -44,7 +44,7 @@ export const STAGE_PLACEMENTS: readonly StagePlacement[] = [
 const PORTRAIT_SCALE_FACTOR = 0.42;
 
 export const PORTRAIT_STAGE_PLACEMENTS: readonly StagePlacement[] = [
-  { x: 0.52, y: 0.34, scale: STAGE_PLACEMENTS[0].scale * PORTRAIT_SCALE_FACTOR },
+  { x: 0.52, y: 0.27, scale: STAGE_PLACEMENTS[0].scale * PORTRAIT_SCALE_FACTOR },
   { x: -0.46, y: 0.22, scale: STAGE_PLACEMENTS[1].scale * PORTRAIT_SCALE_FACTOR },
   { x: -0.42, y: -0.42, scale: STAGE_PLACEMENTS[2].scale * PORTRAIT_SCALE_FACTOR },
   { x: 0, y: -0.18, scale: 0.6 },
@@ -128,7 +128,7 @@ export function resolveDalaStageState(
     from,
     to,
     morph: mapUnitWindow(localProgress, 0.22, 0.64),
-    explode: clampUnit(explodeRise - explodeFall),
+    explode: clampUnit(explodeRise - explodeFall) * choreography.explode,
     settledStage: from,
     sweep,
   };
