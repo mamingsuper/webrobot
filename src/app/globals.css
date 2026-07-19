@@ -1,0 +1,83 @@
+@import "tailwindcss/theme";
+@import "tailwindcss/utilities";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "./dala-original.css";
+@import "./particle-runtime.css";
+@import "./portfolio-dala.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-neue-montreal);
+  --font-heading: var(--font-neue-montreal);
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+}
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #080808;
+  --card-foreground: #ffffff;
+  --popover: #080808;
+  --popover-foreground: #ffffff;
+  --primary: #8052ff;
+  --primary-foreground: #ffffff;
+  --secondary: #ffb829;
+  --secondary-foreground: #000000;
+  --muted: #151515;
+  --muted-foreground: #9a9a9a;
+  --accent: #15846e;
+  --accent-foreground: #ffffff;
+  --border: rgb(255 255 255 / 10%);
+  --input: rgb(255 255 255 / 10%);
+  --ring: #8052ff;
+  --dala-purple: #8052ff;
+  --dala-yellow: #ffb829;
+  --dala-green: #15846e;
+  --dala-grey: #9a9a9a;
+}
+
+.page-tail-spacer {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 2px;
+  height: 2px;
+}
+
+@layer base {
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  body {
+    background: #000000;
+    color: #ffffff;
+  }
+
+  html {
+    font-family: var(--font-neue-montreal), system-ui, sans-serif;
+  }
+}
